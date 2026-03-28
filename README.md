@@ -5,7 +5,7 @@
 [![CI](https://github.com/idaakiwumi/frame-pulse-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/idaakiwumi/frame-pulse-mcp/actions)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![MCP Protocol](https://img.shields.io/badge/MCP-Protocol-orange)](https://modelcontextprotocol.io/)
-[![Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://frame-pulse-demo.streamlit.app)
+[![Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://frame-pulse.streamlit.app)
 
 **AI-native telemetry for creative workstations.**  
 Give your AI assistant (Claude, Hermes, Cursor) a "nervous system" to monitor and govern heavy creative workloads—Blender renders, Unreal builds, Houdini simulations—preventing thermal crashes and lost work during crunch.
