@@ -2,7 +2,7 @@ from mcp.server.fastmcp import FastMCP
 import psutil
 from typing import Optional
 
-mcp = FastMCP("ProductionPulse")
+mcp = FastMCP("FramePulse")
 
 @mcp.tool()
 def get_thermal_status():
