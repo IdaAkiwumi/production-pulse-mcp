@@ -5,11 +5,11 @@ import os
 # Add src to path so we can import our tools
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
-from production_pulse.server import get_thermal_status, find_render_processes, emergency_throttle
+from Frame_pulse.server import get_thermal_status, find_render_processes, emergency_throttle
 
-st.set_page_config(page_title="Production Pulse | Studio Telemetry", layout="wide", page_icon="🎬")
+st.set_page_config(page_title="Frame Pulse | Studio Telemetry", layout="wide", page_icon="🎬")
 
-st.title("🎬 Production Pulse")
+st.title("🎬 Frame Pulse")
 st.caption("Mission Control for AI-Augmented Creative Workflows")
 
 # Auto-refresh every 10 seconds
@@ -86,4 +86,4 @@ st.divider()
 if st.button("🔄 Refresh Now"):
     st.rerun()
 
-st.caption("💡 Real-time system telemetry via Python + MCP. [GitHub Repo](https://github.com/idaakiwumi/production-pulse-mcp)")
+st.caption("💡 Real-time system telemetry via Python + MCP. [GitHub Repo](https://github.com/idaakiwumi/Frame-pulse-mcp)")
