@@ -45,7 +45,12 @@ python -m frame_pulse.server
     }
   }
 }
-'''
+bash```
+
+
+
+
+
 
 ## ☕ Support the Mission
 
