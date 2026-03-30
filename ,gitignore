@@ -1,4 +1,13 @@
 .env
-test_*.py
+
+
+# Logs
+*.log
+debug_path.txt
+
+# Python
 __pycache__/
+*.py[cod]
+*$py.class
+test_*.py
 *.pyc
