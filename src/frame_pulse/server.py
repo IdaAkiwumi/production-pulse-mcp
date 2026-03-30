@@ -12,11 +12,27 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from mcp.server.fastmcp import FastMCP
 from typing import Optional
 
-# Absolute imports (work when run directly)
 from frame_pulse.system_client import get_thermal_status
 from frame_pulse.render_guard import find_render_processes, format_process_list, emergency_throttle
 
 mcp = FastMCP("FramePulse")
+
+THROTTLE_EXPLANATION = """
+⚠️ WHAT THROTTLING/DEPRIORITIZING DOES:
+- Reduces the target process's CPU priority (Windows: BELOW_NORMAL, Linux: nice +10)
+- Process keeps running but yields CPU to higher-priority work
+- Renders complete faster, system stays responsive, thermals stay controlled
+- REVERSIBLE: You can restore normal priority later if needed
+
+⚠️ WHEN TO USE:
+- Background apps competing with your main render
+- Thermal CAUTION state (CPU 75-90%, Temp 75-85°C)
+- Not responding to a render farm deadline
+
+⚠️ WHEN NOT TO USE:
+- The process IS your main render (throttle something else instead)
+- CRITICAL thermal state (use emergency throttle or pause entirely)
+"""
 
 @mcp.tool()
 def check_system_health():
@@ -31,8 +47,113 @@ def scan_creative_apps(app_name: Optional[str] = None):
 
 @mcp.tool()
 def throttle_process(target_pid: Optional[int] = None):
-    """Reduce CPU priority of a process to prevent overheating."""
+    """
+    Reduce CPU priority of a process to prevent overheating.
+    
+    ALIASES: Also responds to "deprioritize" for clarity.
+    
+    Args:
+        target_pid: Process ID to throttle. If None, auto-throttles highest CPU consumer.
+    
+    Returns:
+        Confirmation message with explanation of what was done.
+    """
+    result = emergency_throttle(target_pid)
+    return f"{result}\n\n{THROTTLE_EXPLANATION}"
+
+@mcp.tool()
+def deprioritize_process(target_pid: Optional[int] = None):
+    """
+    SAME AS THROTTLE — reduces CPU priority of a process.
+    
+    Use this if "throttle" sounds too aggressive. Same function, clearer language.
+    
+    Args:
+        target_pid: Process ID to deprioritize. If None, auto-selects highest CPU consumer.
+    
+    Returns:
+        Confirmation with full explanation of effects.
+    """
+    result = emergency_throttle(target_pid)
+    return f"{result}\n\nTHROTTLING = DEPRIORITIZING: Same function, clearer name for non-technical users.\n\n{THROTTLE_EXPLANATION}"
+
+@mcp.tool()
+def emergency_throttle_process(target_pid: Optional[int] = None):
+    """
+    EMERGENCY: Immediately reduce priority without confirmation.
+    
+    Use when:
+    - System in CRITICAL thermal state (CPU >90%, Temp >85°C)
+    - Render farm node about to shut down from overheating
+    - No time for explanation
+    
+    Returns:
+        Action taken, minimal explanation.
+    """
     return emergency_throttle(target_pid)
+
+@mcp.tool()
+def restore_priority(target_pid: int):
+    """
+    Restore a throttled process to normal CPU priority.
+    
+    Use this to 'undo' a throttle/deprioritize if you throttled the wrong process
+    or if your main render finished and you want full performance back.
+    
+    Args:
+        target_pid: Process ID to restore to normal priority (REQUIRED, no auto-detect for safety)
+    
+    Returns:
+        Confirmation of priority restoration.
+    """
+    try:
+        import psutil
+        p = psutil.Process(target_pid)
+        
+        if hasattr(psutil, 'NORMAL_PRIORITY_CLASS'):
+            p.nice(psutil.NORMAL_PRIORITY_CLASS)
+        else:
+            p.nice(0)  # Unix normal priority
+        
+        return f"✅ Restored {p.name()} (PID {target_pid}) to normal priority\n\nProcess will now compete equally for CPU resources."
+    except Exception as e:
+        return f"❌ Failed to restore priority: {e}"
+
+@mcp.tool()
+def prioritize_process(target_pid: int):
+    """
+    Give a process HIGHER than normal CPU priority.
+    
+    ⚠️ WARNING: Use sparingly. High priority can make system unresponsive.
+    
+    Use only when:
+    - A critical render must finish by deadline
+    - System is otherwise idle
+    - You accept risk of temporary unresponsiveness
+    
+    Args:
+        target_pid: Process ID to boost (REQUIRED)
+    
+    Returns:
+        Confirmation with warning about side effects.
+    """
+    try:
+        import psutil
+        p = psutil.Process(target_pid)
+        
+        if hasattr(psutil, 'HIGH_PRIORITY_CLASS'):
+            p.nice(psutil.HIGH_PRIORITY_CLASS)
+            warning = "⚠️ HIGH PRIORITY SET: This process will preempt most others. System may feel sluggish."
+        elif hasattr(psutil, 'ABOVE_NORMAL_PRIORITY_CLASS'):
+            p.nice(psutil.ABOVE_NORMAL_PRIORITY_CLASS)
+            warning = "⚠️ Above-normal priority set. Monitor system responsiveness."
+        else:
+            p.nice(-10)  # Unix high priority (negative = higher)
+            warning = "⚠️ High nice value set (-10). Monitor system load."
+        
+        return f"⬆️ Prioritized {p.name()} (PID {target_pid})\n\n{warning}\n\nUse 'restore_priority' to undo if system becomes unresponsive."
+    except Exception as e:
+        return f"❌ Failed to prioritize: {e}"
 
 # Backward compatible aliases
 @mcp.tool()
@@ -49,7 +170,8 @@ def find_render_processes_alias(app_name: Optional[str] = None):
 @mcp.tool()
 def emergency_throttle_alias(target_pid: Optional[int] = None):
     """Alias for throttle_process."""
-    return emergency_throttle(target_pid)
+    result = emergency_throttle(target_pid)
+    return f"{result}\n\n{THROTTLE_EXPLANATION}"
 
 if __name__ == "__main__":
     mcp.run()
