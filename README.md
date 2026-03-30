@@ -45,13 +45,20 @@ python -m frame_pulse.server
 {
   "mcpServers": {
     "frame-pulse": {
-      "command": "python",
-      "args": ["-m", "frame_pulse.server"]
+      "command": "py",
+      "args": [
+        "-3.14",
+        "-u",
+        "C:\\Users\\YOUR_USERNAME\\OneDrive\\Documents\\GitHub\\frame-pulse-mcp\\src\\frame_pulse\\server.py"
+      ]
     }
   }
 }
 ```
+Then ask Claude: "Check my system status" or "Deprioritize my background apps"
 
+##🤝 Community & Recognition
+**Featured on Lobehub — AI tools discovery platform.
 
 ## 🛠️ Built With
 
