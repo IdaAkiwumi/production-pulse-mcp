@@ -14,34 +14,23 @@ Give your AI assistant (Claude, Hermes, Cursor) a "nervous system" to monitor an
 
 ![Mission Control Dashboard](https://raw.githubusercontent.com/idaakiwumi/frame-pulse-mcp/main/assets/dashboard-screenshot.png)
 
-## 🎯 Why This Exists
+---
 
-**The Studio Problem:**  
-Digital content creation tools are resource-heavy. During overnight renders or UE5 lighting builds, workstations overheat or hang, losing hours of work. Existing monitoring (Glances, htop) shows *data*, but they can’t *act*.
+## 🚀 Quick Start
 
-**The Solution:**  
-Frame Pulse exposes **MCP Tools** that let an AI agent:
-- **Monitor:** Real-time CPU/GPU thermals, RAM pressure, disk I/O
-- **Govern:** Auto-throttle background apps when `blender.exe` hits 85°C
-- **Guard:** Pause renders and notify you via Telegram/Discord if thermal limits exceed safe thresholds
+### Option A: Claude Desktop (Recommended)
+1. **Clone and install**
+[CODE_START]powershell
+git clone [https://github.com/idaakiwumi/frame-pulse-mcp.git](https://github.com/idaakiwumi/frame-pulse-mcp.git)
+cd frame-pulse-mcp
+pip install -r requirements.txt
+[CODE_END]
 
-Built for **Technical Directors**, **AI-savvy artists**, and **Pipeline Engineers** in film, gaming, and immersive media.
+2. **Add to Claude Desktop config**
+   * **Windows (MSIX/Store):** `%LOCALAPPDATA%\Packages\Claude_pzs8sxrjxfjjc\LocalCache\Roaming\Claude\claude_desktop_config.json`
+   * **Standard:** `%APPDATA%\Claude\claude_desktop_config.json`
 
-## 🚀 30-Second Start
-
-
-### For the AI Agent (MCP Server)
-```bash
-# 1. Install
-pip install frame-pulse-mcp
-
-# 2. Run the MCP server (stdio transport for Claude Desktop)
-python -m frame_pulse.server
-
-# 3. Add to your Claude Desktop config
-# Mac: ~/Library/Application Support/Claude/claude_desktop_config.json
-# Win: %APPDATA%/Claude/claude_desktop_config.json
-
+``` json
 {
   "mcpServers": {
     "frame-pulse": {
@@ -49,12 +38,42 @@ python -m frame_pulse.server
       "args": [
         "-3.14",
         "-u",
-        "C:\\Users\\YOUR_USERNAME\\OneDrive\\Documents\\GitHub\\frame-pulse-mcp\\src\\frame_pulse\\server.py"
+        "C:\\Users\\YOUR_PATH\\frame-pulse-mcp\\src\\frame_pulse\\server.py"
       ]
     }
   }
 }
 ```
+
+### Option B: The "Hero Demo" (Streamlit)
+I built a high-fidelity **Mission Control Dashboard** using Streamlit. While the MCP runs in the background, this dashboard serves as the visual command center for the project.
+``` powershell
+streamlit run streamlit_app/mission_control.py
+```
+
+---
+
+## 📱 The "Digital Pager" Ecosystem (Telegram & Discord)
+
+As a **Product Architect**, I designed Frame Pulse to be "Headless." Creative professionals don't want another window to monitor; they want an assistant that pings them when they are away from their desk.
+
+* **Telegram Bot:** Acts as a private production pager. Get a message on your phone if your CPU hits 90°C while you're grabbing coffee.
+* **Discord Webhooks:** Rich, color-coded embeds sent to your studio's Discord server for team-wide render farm monitoring.
+
+**Setup:** Configure your `.env` file with your `TELEGRAM_BOT_TOKEN` and `TELEGRAM_CHAT_ID`.
+
+---
+
+## 🛠️ MCP Tools for AI Agents
+
+| Tool | Function | Use Case |
+| :--- | :--- | :--- |
+| `check_system_health()` | CPU, RAM, and Thermal scan | "Is it safe to start a 6-hour render?" |
+| `scan_creative_apps()` | Identifies Blender, Unreal, Maya, etc. | "What's currently taxing the GPU?" |
+| `emergency_throttle()` | Immediate CPU priority reduction | "CRITICAL: Throttle background apps now." |
+| `get_thermal_status()` | Real-time temperature read | "Am I at risk of a thermal shutdown?" |
+
+---
 Then ask Claude: "Check my system status" or "Deprioritize my background apps"
 
 ##🤝 Community & Recognition
