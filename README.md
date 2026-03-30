@@ -95,12 +95,6 @@ As a **Product Architect**, I designed Frame Pulse to be "Headless." Creative pr
 > "Frame Pulse caught a thermal spike before our overnight farm render. Saved us 14 hours of redo work."  
 > — Anonymous VFX Supervisor (via DM)
 
-## 🗺️ Roadmap
-
-- [ ] GPU VRAM monitoring (NVIDIA NVML)
-- [ ] Discord/Slack webhook alerts
-- [ ] Multi-node render farm dashboard
-- [ ] macOS thermal zone support
 
 ## ☕ Support the Mission
 
