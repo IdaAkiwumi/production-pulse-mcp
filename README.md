@@ -15,6 +15,21 @@ Give your AI assistant (Claude, Hermes, Cursor) a "nervous system" to monitor an
 
 ---
 
+## 🎯 The Problem Frame Pulse Solves
+
+**Digital content creation (DCC) tools are resource-intensive.** During overnight renders or UE5 lighting builds, workstations overheat, hang, or crash—destroying hours of work and missing deadlines.
+
+**Existing tools (Glances, htop) show data. Frame Pulse lets AI *act*.**
+
+| Traditional Monitoring | Frame Pulse with AI |
+|----------------------|-------------------|
+| You watch numbers | Claude asks "Is my system safe?" |
+| Crash after the fact | Throttle *before* thermal damage |
+| Manual Task Manager | Natural language "deprioritize Chrome" |
+| Silent failure | Discord/Telegram alerts at 2AM |
+
+---
+
 ## 🚀 Quick Start
 
 ### Option A: Claude Desktop (Recommended)
