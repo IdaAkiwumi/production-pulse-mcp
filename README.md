@@ -43,6 +43,7 @@ pip install -r requirements.txt
   }
 }
 ```
+Then ask Claude: "Check my system status" or "Deprioritize my background apps"
 
 ### Option B: The "Hero Demo" (Streamlit)
 I built a high-fidelity **Mission Control Dashboard** using Streamlit. While the MCP runs in the background, this dashboard serves as the visual command center for the project.
@@ -73,7 +74,7 @@ As a **Product Architect**, I designed Frame Pulse to be "Headless." Creative pr
 | `get_thermal_status()` | Real-time temperature read | "Am I at risk of a thermal shutdown?" |
 
 ---
-Then ask Claude: "Check my system status" or "Deprioritize my background apps"
+
 
 ##🤝 Community & Recognition
 **Featured on Lobehub — AI tools discovery platform.
